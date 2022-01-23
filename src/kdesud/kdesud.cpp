@@ -325,6 +325,8 @@ static bool prevent_tracing()
 #elif defined(PROC_TRACE_CTL)
     int disable = PROC_TRACE_CTL_DISABLE_EXEC;
     r = procctl(P_PID, getpid(), PROC_TRACE_CTL, &disable);
+#else
+#warning Missing implementation for disabling traceability on this platform
 #endif
 
     return r == 0;
@@ -336,9 +338,8 @@ static bool prevent_tracing()
 
 int main(int argc, char *argv[])
 {
-    if (!prevent_tracing())
-    {
-        qWarning() << "[" << __FILE__ << ":" << __LINE__ << "] " << "failed to make process memory untraceable" << strerror(errno) << "\n";
+    if (!prevent_tracing()) {
+        qWarning(KSUD_LOG) << "failed to make process memory untraceable" << strerror(errno);
     }
 
     QCoreApplication app(argc, argv);
