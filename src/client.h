@@ -177,10 +177,15 @@ public:
     int startServer();
 
     /**
-     * Obsolete: returns true.
+     * The server used to rely on being installed with an sgid bit to
+     * prevent core dumps, ptrace and similar. This has been changed, and
+     * the same security guarantees now apply even without the sgid bit,
+     * so since 5.92 this always returns true.
      *
-     * The server used to rely on being installed with an sgid bit to prevent core dumps, ptrace and similar.
-     * This has been changed, and the same security guarantees now apply even without the sgid bit.
+     * If calling code depends on KDESu 5.92 or newer already, use of this
+     * can be dropped. If instead an older version of KDESu might be used,
+     * then this should be called to determine whether the server is
+     * usable.
      */
     bool isServerSGID();
 
